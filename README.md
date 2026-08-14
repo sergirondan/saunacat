@@ -53,6 +53,23 @@ repositori i deixa la configuració de compilació buida:
 Després, a **Custom domains**, afegeix `sauna.cat`. Cada `git push` a `main`
 torna a publicar el lloc automàticament.
 
+## Pendent: la fotografia de la capçalera
+
+La portada espera la fotografia del llac amb les muntanyes en aquesta ruta exacta:
+
+```
+assets/img/capcalera-llac.jpg
+```
+
+Desa-hi el fitxer i la capçalera la farà servir automàticament. Mentre no hi
+sigui, la capa de sota (`heroi.svg`) es pinta en el seu lloc, de manera que la
+pàgina no es veu trencada; a la consola del navegador hi surt un 404 per aquesta
+imatge fins que la posis.
+
+La composició està pensada per a una foto apaïsada i ampla (idealment 2400 px o
+més d'ample) amb la zona inferior esquerra relativament neta, que és on cauen el
+títol i els botons.
+
 ## Què cal canviar abans de publicar de debò
 
 Aquests valors són de mostra i surten repetits a tots els HTML. Fes una cerca i

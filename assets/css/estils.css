@@ -281,9 +281,46 @@ p {
   color: var(--grafit);
 }
 
+.boto--fantasma {
+  border-color: rgba(251, 250, 248, 0.45);
+  color: var(--os);
+  background: transparent;
+}
+
+.boto--fantasma:hover {
+  background: rgba(251, 250, 248, 0.12);
+  border-color: var(--os);
+}
+
 .boto--petit {
   padding: 0.65rem 1.1rem;
   font-size: 0.7rem;
+}
+
+/* Enllaç de text amb fletxa, a l'estil de les seccions editorials */
+
+.enllac-fletxa {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 1px solid var(--linia);
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: var(--tinta);
+  transition: border-color var(--transicio), gap var(--transicio);
+}
+
+.enllac-fletxa:hover {
+  border-color: var(--avet);
+  gap: 1rem;
+}
+
+.enllac-fletxa span {
+  color: var(--avet);
 }
 
 .boto--ple {
@@ -521,66 +558,100 @@ p {
 
 /* 5. Heroi i capçaleres de pàgina ------------------------------------------ */
 
+/* Portada a tota pantalla amb fotografia de fons.
+   La primera capa és la fotografia; si encara no hi és, es veu la
+   il·lustració heroi.svg que hi ha a sota. */
 .heroi {
   position: relative;
   display: flex;
-  align-items: flex-end;
-  min-height: min(76vh, 680px);
-  padding: 5rem 0 4rem;
+  flex-direction: column;
+  justify-content: flex-end;
+  min-height: min(92svh, 880px);
+  padding: 7rem 0 0;
   color: var(--os);
-  background: var(--grafit);
+  background-color: var(--grafit);
+  background-image: linear-gradient(
+      to bottom,
+      rgba(24, 28, 31, 0.35) 0%,
+      rgba(24, 28, 31, 0.12) 35%,
+      rgba(24, 28, 31, 0.72) 100%
+    ),
+    url("../img/capcalera-llac.jpg"), url("../img/heroi.svg");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   overflow: hidden;
-}
-
-.heroi__fons {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
 }
 
 .heroi__cos {
   position: relative;
   z-index: 2;
-  max-width: 760px;
+  padding-bottom: clamp(2.5rem, 5vw, 4rem);
 }
 
-.heroi h1 {
-  margin-bottom: 1.2rem;
+.heroi__marca {
+  margin: 0 0 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.heroi__nom {
+  font-family: var(--tipo-titol);
+  font-size: clamp(3.2rem, 12vw, 9.5rem);
   font-weight: 400;
+  line-height: 0.92;
+  letter-spacing: -0.035em;
 }
 
-.heroi h1 span {
-  color: var(--bedoll);
+.heroi__firma {
+  font-family: var(--tipo);
+  font-size: clamp(0.72rem, 1.4vw, 0.95rem);
+  font-weight: 500;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: rgba(251, 250, 248, 0.78);
 }
 
 .heroi__text {
-  max-width: 520px;
+  max-width: 46ch;
   font-size: 1.02rem;
-  color: rgba(251, 250, 248, 0.8);
+  color: rgba(251, 250, 248, 0.82);
 }
 
 .heroi__accions {
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
-  margin: 2rem 0 2.4rem;
+  margin: 2rem 0 0;
 }
 
 .heroi__punts {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 2rem;
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
   margin: 0;
-  padding: 1.5rem 0 0;
+  padding: 0;
   list-style: none;
   border-top: 1px solid var(--linia-fosca);
-  font-size: 0.72rem;
+  background: rgba(24, 28, 31, 0.35);
+  backdrop-filter: blur(6px);
+  font-size: 0.7rem;
   font-weight: 500;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgba(251, 250, 248, 0.72);
+  color: rgba(251, 250, 248, 0.82);
+}
+
+.heroi__punts li {
+  padding: 1.15rem clamp(1.25rem, 5vw, 3rem);
+  border-left: 1px solid var(--linia-fosca);
+  text-align: center;
+}
+
+.heroi__punts li:first-child {
+  border-left: 0;
 }
 
 .capcalera-pagina {
@@ -727,64 +798,120 @@ p {
   color: var(--pissarra);
 }
 
-/* Segell de marca (bloc de KUUMA) */
+/* Saunes personalitzades */
 
-.segell {
-  margin: 0;
-  padding: clamp(2rem, 4vw, 3rem);
+.personalitzades {
   background: var(--sorra);
-  border: 1px solid var(--linia);
-  border-radius: var(--radi-gran);
-}
-
-.segell__marca {
-  margin: 0;
-  font-family: var(--tipo-titol);
-  font-size: clamp(2.4rem, 5vw, 3.4rem);
-  font-weight: 400;
-  letter-spacing: 0.16em;
-  line-height: 1;
-  color: var(--grafit);
-}
-
-.segell__lema {
-  margin: 1rem 0 0;
-  padding-bottom: 1.6rem;
+  border-top: 1px solid var(--linia);
   border-bottom: 1px solid var(--linia);
-  font-size: 0.78rem;
-  font-weight: 500;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
+}
+
+.personalitzades__cos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2.5rem, 6vw, 5.5rem);
+  align-items: start;
+}
+
+.personalitzades__text h2 {
+  margin-bottom: 1.2rem;
+}
+
+.personalitzades__text p {
+  color: var(--pissarra);
+}
+
+.personalitzades__llista {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.personalitzades__llista li {
+  padding-top: 1.2rem;
+  border-top: 1px solid var(--linia);
+}
+
+.personalitzades__num {
+  display: block;
+  margin-bottom: 0.7rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
   color: var(--avet);
 }
 
-.segell__dades {
+.personalitzades__llista h3 {
+  margin-bottom: 0.35rem;
+  font-size: 1.02rem;
+}
+
+.personalitzades__llista p {
   margin: 0;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--pissarra);
 }
 
-.segell__dades > div {
-  padding: 1.1rem 0;
-  border-bottom: 1px solid var(--linia);
+/* Bloc de tancament de KUUMA */
+
+.kuuma__cos {
+  display: grid;
+  grid-template-columns: 0.85fr 1.15fr;
+  gap: clamp(2.5rem, 6vw, 5.5rem);
+  align-items: start;
 }
 
-.segell__dades > div:last-child {
-  padding-bottom: 0;
-  border-bottom: 0;
+.kuuma__marca {
+  padding-top: 0.4rem;
 }
 
-.segell__dades dt {
+.kuuma__nom {
+  margin: 0;
+  font-family: var(--tipo-titol);
+  font-size: clamp(2.8rem, 6vw, 4.6rem);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0.14em;
+  color: var(--os);
+}
+
+.kuuma__lema {
+  margin: 1.2rem 0 0;
+  font-size: 0.74rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--bedoll);
+}
+
+.kuuma__dades {
+  margin: 2.5rem 0 0;
+  border-top: 1px solid var(--linia-fosca);
+}
+
+.kuuma__dades > div {
+  display: grid;
+  grid-template-columns: 32% 1fr;
+  gap: 1.5rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--linia-fosca);
+}
+
+.kuuma__dades dt {
   font-size: 0.66rem;
   font-weight: 600;
   letter-spacing: 0.18em;
   text-transform: uppercase;
-  color: var(--pissarra);
-  margin-bottom: 0.3rem;
+  color: rgba(251, 250, 248, 0.55);
 }
 
-.segell__dades dd {
+.kuuma__dades dd {
   margin: 0;
-  font-size: 0.98rem;
-  line-height: 1.5;
+  font-size: 0.95rem;
 }
 
 /* Beneficis */
@@ -1762,7 +1889,9 @@ p {
   .duo,
   .fitxa__cos,
   .especificacions,
-  .contacte {
+  .contacte,
+  .personalitzades__cos,
+  .kuuma__cos {
     grid-template-columns: 1fr;
   }
 
@@ -1807,12 +1936,31 @@ p {
   }
 
   .heroi {
-    min-height: 0;
-    padding: 3.5rem 0;
+    min-height: min(88svh, 640px);
+    padding-top: 4rem;
   }
 
   .heroi__punts {
-    gap: 1rem 1.6rem;
+    grid-template-columns: 1fr;
+  }
+
+  .heroi__punts li {
+    border-left: 0;
+    border-top: 1px solid var(--linia-fosca);
+    padding: 0.85rem 1.25rem;
+  }
+
+  .heroi__punts li:first-child {
+    border-top: 0;
+  }
+
+  .personalitzades__llista {
+    grid-template-columns: 1fr;
+  }
+
+  .kuuma__dades > div {
+    grid-template-columns: 1fr;
+    gap: 0.3rem;
   }
 }
 

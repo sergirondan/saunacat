@@ -42,6 +42,7 @@
     </a>
     <nav class="nav" aria-label="Navegació principal">
       <a href="#saunes" class="nav__enllac">Saunes</a>
+      <a href="#personalitzades" class="nav__enllac">A mida</a>
       <a href="#qui-som" class="nav__enllac">Qui som</a>
       <a href="#ressenyes" class="nav__enllac">Ressenyes</a>
       <a href="#preguntes" class="nav__enllac">Preguntes</a>
@@ -57,6 +58,7 @@
   </div>
   <div class="menu-mobil" id="menu-mobil" hidden>
     <a href="#saunes">Saunes</a>
+    <a href="#personalitzades">A mida</a>
     <a href="#qui-som">Qui som</a>
     <a href="#ressenyes">Ressenyes</a>
     <a href="#preguntes">Preguntes</a>
@@ -69,24 +71,25 @@
 
 <!-- ================= HEROI ================= -->
 <section class="heroi">
-  <img class="heroi__fons" src="assets/img/heroi.svg" alt="" width="1600" height="900">
   <div class="contenidor heroi__cos">
-    <p class="etiqueta etiqueta--clara">Part de KUUMA · Arrels fineses · Entrega a tot Catalunya</p>
-    <h1>Saunes de fusta massissa<br><span>fetes per a la vida de casa</span></h1>
+    <h1 class="heroi__marca">
+      <span class="heroi__nom">sauna.cat</span>
+      <span class="heroi__firma">by KUUMA</span>
+    </h1>
     <p class="heroi__text">
-      Calor finlandesa de debò, fusta massissa de 38 mm i estufes Harvia. Muntades de fàbrica,
-      entregades a la porta i pensades per fer-les servir cada dia, no dos caps de setmana l'any.
+      Saunes de fusta massissa, calor finlandesa de debò i estufes Harvia.
+      Muntades de fàbrica i entregades a tot Catalunya.
     </p>
     <div class="heroi__accions">
-      <a class="boto boto--primari" href="#saunes">Veure la gamma</a>
-      <button class="boto boto--clar" data-obre-formulari data-producte="">Que ens truquin</button>
+      <a class="boto boto--clar" href="#saunes">Veure la gamma <span aria-hidden="true">→</span></a>
+      <button class="boto boto--fantasma" data-obre-formulari data-producte="">Que ens truquin</button>
     </div>
-    <ul class="heroi__punts">
-      <li>30 dies de prova</li>
-      <li>Fins a 5 anys de garantia</li>
-      <li>Sense obra ni permisos</li>
-    </ul>
   </div>
+  <ul class="heroi__punts">
+    <li>30 dies de prova</li>
+    <li>Fins a 5 anys de garantia</li>
+    <li>Sense obra ni permisos</li>
+  </ul>
 </section>
 
 <!-- ================= GARANTIES ================= -->
@@ -113,53 +116,6 @@
       <h3>Entrega ràpida</h3>
       <p>Estoc propi a Catalunya i transport assegurat fins a la porta de casa en 5–15 dies.</p>
     </div>
-  </div>
-</section>
-
-<!-- ================= QUI SOM ================= -->
-<section class="seccio" id="qui-som">
-  <div class="contenidor duo">
-    <div class="duo__text">
-      <p class="etiqueta">Qui som</p>
-      <h2>Part de KUUMA, amb arrels fineses</h2>
-      <p>
-        sauna.cat és la divisió domèstica de <strong>KUUMA</strong>, una companyia d'arrels fineses
-        dedicada a instal·lacions wellness. Portem anys muntant saunes, espais d'aigua i zones de
-        recuperació per a hotels, gimnasos i centres esportius; aquestes mateixes solucions són les
-        que ara portem a casa teva, en format domèstic.
-      </p>
-      <p>
-        Aquesta herència es nota en com fem les coses. A Finlàndia la sauna no és un caprici de
-        catàleg: és una peça de la casa que ha de durar dècades i encendre's cada setmana. Per això
-        treballem amb fusta massissa de 38 mm, estufes Harvia, acer inoxidable a tota la ferramenta
-        i vidre trempat, en comptes del contraxapat prim que aguanta dues temporades.
-      </p>
-      <ul class="llista-marcada">
-        <li>Divisió domèstica de KUUMA, especialistes en instal·lacions wellness</li>
-        <li>Criteri i components finlandesos, muntatge i servei des de Catalunya</li>
-        <li>Fusta massissa per dins i per fora, sense COV</li>
-        <li>Servei tècnic i recanvis propis, sense passar per cap central estrangera</li>
-      </ul>
-      <button class="boto boto--contorn" data-obre-formulari data-producte="">Parla amb nosaltres</button>
-    </div>
-    <aside class="segell">
-      <p class="segell__marca">KUUMA</p>
-      <p class="segell__lema">Instal·lacions wellness d'arrels fineses</p>
-      <dl class="segell__dades">
-        <div>
-          <dt>Origen</dt>
-          <dd>Finlàndia</dd>
-        </div>
-        <div>
-          <dt>Especialitat</dt>
-          <dd>Saunes, espais d'aigua i zones de recuperació</dd>
-        </div>
-        <div>
-          <dt>sauna.cat</dt>
-          <dd>Divisió domèstica, amb servei propi a Catalunya</dd>
-        </div>
-      </dl>
-    </aside>
   </div>
 </section>
 
@@ -238,6 +194,51 @@
         </div>
       </article>
     </div>
+  </div>
+</section>
+
+<!-- ================= SAUNES PERSONALITZADES ================= -->
+<section class="seccio personalitzades" id="personalitzades">
+  <div class="contenidor personalitzades__cos">
+    <div class="personalitzades__text">
+      <p class="etiqueta">Saunes personalitzades</p>
+      <h2>El catàleg és el començament, no el final</h2>
+      <p>
+        Els quatre models de dalt són els que tenim en estoc i els que més sortida tenen, però no
+        són tot el que fem. <strong>Tenim molts més dissenys</strong> segons el que estiguis
+        buscant: altres mides, altres acabats de fusta, distribucions de banc diferents, panoràmiques
+        més grans o formats que s'adapten a un espai concret de casa teva.
+      </p>
+      <p>
+        Si tens un racó difícil, una idea al cap o una referència que has vist en algun lloc,
+        digue-nos-ho. Ho estudiem, et diem si és viable i et passem un pressupost tancat abans que
+        et comprometis a res.
+      </p>
+      <a class="enllac-fletxa" href="#contacte">Explica'ns què tens al cap <span aria-hidden="true">→</span></a>
+    </div>
+
+    <ul class="personalitzades__llista">
+      <li>
+        <span class="personalitzades__num">01</span>
+        <h3>A mida</h3>
+        <p>Amplada, fondària i alçada ajustades a l'espai real que tens, amb el mateix gruix de fusta.</p>
+      </li>
+      <li>
+        <span class="personalitzades__num">02</span>
+        <h3>Acabats</h3>
+        <p>Cedre vist, fusta tractada en negre mat, revestiment blanc o combinacions amb vidre.</p>
+      </li>
+      <li>
+        <span class="personalitzades__num">03</span>
+        <h3>Distribució</h3>
+        <p>Bancs en ela, dos nivells, zona de vestidor coberta o porxo integrat.</p>
+      </li>
+      <li>
+        <span class="personalitzades__num">04</span>
+        <h3>Interior o exterior</h3>
+        <p>Cabines per a soterrani i bany, o volums preparats per estar a la intempèrie tot l'any.</p>
+      </li>
+    </ul>
   </div>
 </section>
 
@@ -487,6 +488,46 @@
           <p>Tenim unitats muntades i enceses a l'exposició. Concerta visita per telèfon i te les ensenyem funcionant.</p>
         </div>
       </aside>
+    </div>
+  </div>
+</section>
+
+<!-- ================= QUI SOM · KUUMA ================= -->
+<section class="seccio seccio--fosca kuuma" id="qui-som">
+  <div class="contenidor kuuma__cos">
+    <div class="kuuma__marca">
+      <p class="kuuma__nom">KUUMA</p>
+      <p class="kuuma__lema">Instal·lacions wellness d'arrels fineses</p>
+    </div>
+    <div class="kuuma__text">
+      <p class="etiqueta">Qui som</p>
+      <h2>sauna.cat és la divisió domèstica de KUUMA</h2>
+      <p>
+        KUUMA és una companyia d'arrels fineses dedicada a instal·lacions wellness. Portem anys
+        muntant saunes, espais d'aigua i zones de recuperació per a hotels, gimnasos i centres
+        esportius; aquestes mateixes solucions són les que ara portem a casa teva, en format
+        domèstic.
+      </p>
+      <p>
+        Aquesta herència es nota en com fem les coses. A Finlàndia la sauna no és un caprici de
+        catàleg: és una peça de la casa que ha de durar dècades i encendre's cada setmana. Per això
+        treballem amb fusta massissa de 38 mm, estufes Harvia, acer inoxidable a tota la ferramenta
+        i vidre trempat, en comptes del contraxapat prim que aguanta dues temporades.
+      </p>
+      <dl class="kuuma__dades">
+        <div>
+          <dt>Origen</dt>
+          <dd>Finlàndia</dd>
+        </div>
+        <div>
+          <dt>Especialitat</dt>
+          <dd>Saunes, espais d'aigua i zones de recuperació</dd>
+        </div>
+        <div>
+          <dt>sauna.cat</dt>
+          <dd>Divisió domèstica, amb servei propi a Catalunya</dd>
+        </div>
+      </dl>
     </div>
   </div>
 </section>
