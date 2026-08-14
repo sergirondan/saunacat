@@ -16,11 +16,16 @@ productes/               Una fitxa per model (4)
   cub-de-cedre-4.html
   black-eco-4.html
   white-retreat-4.html
+functions/api/contacte.js  Pages Function: envia els formularis per correu
 assets/css/estils.css    Tot l'estil del lloc
-assets/js/principal.js   Menú, finestra del formulari i validació
-assets/img/*.svg         Il·lustracions dels productes
+assets/js/principal.js   Menú, galeria, finestra del formulari i validació
+assets/img/                Fotografia de la capçalera i il·lustracions
 robots.txt, sitemap.xml
 ```
+
+Tot el que hi ha fora de `functions/` són fitxers estàtics que es publiquen tal
+com són. La carpeta `functions/` la desplega Cloudflare Pages automàticament;
+segueix sense caldre cap ordre de compilació.
 
 ## Veure'l en local
 
@@ -94,38 +99,57 @@ A més:
 
 ## Com arriben els formularis a info@sauna.cat
 
-Un lloc estàtic no pot enviar correu per si sol: no hi ha cap servidor darrere
-que el remeti. Cal un servei que ho faci per nosaltres, i només demana enganxar
-una clau. **Fins que no ho facis, els correus no arriben sols.**
+Tot es fa dins de Cloudflare, sense cap servei de tercers. El navegador envia el
+formulari a `/api/contacte`, que és la Pages Function de
+`functions/api/contacte.js`, i aquesta remet el correu amb l'API de **Cloudflare
+Email Service**. Cloudflare desplega la funció automàticament: no cal canviar la
+configuració de compilació ni instal·lar res.
 
-### El pas que falta
+### Posada en marxa
 
-1. Ves a [web3forms.com](https://web3forms.com) i demana una clau d'accés per a
-   `info@sauna.cat`. Te l'envien per correu al moment; no cal crear cap compte
-   ni posar-hi cap targeta.
-2. Obre `assets/js/principal.js` i enganxa-la a la primera línia útil:
+**1. Donar d'alta el domini a Email Service.** Al tauler de Cloudflare, amb el
+domini `sauna.cat` seleccionat, entra a **Email** i completa l'alta. Verifica
+`info@sauna.cat` com a adreça de destinació: enviar a adreces verificades del
+teu compte és gratuït en qualsevol pla.
 
-```js
-var CORREU = {
-  clauWeb3Forms: 'la-teva-clau-aqui',
-  endpoint: ''
-};
-```
+**2. Crear un token d'API** a *My Profile → API Tokens*, amb permís d'enviament
+de correu sobre el compte. Copia'l, que només es mostra un cop. Apunta també
+l'*Account ID*, que surt a la barra lateral de la vista general del domini.
 
-3. Puja el canvi. A partir d'aquí, **cada enviament del formulari de contacte,
-   del formulari de la finestra emergent i de l'alta al butlletí arriba a
-   `info@sauna.cat`** amb el nom, el correu, el telèfon, el producte d'interès,
-   el missatge, la pàgina d'origen i l'hora.
+**3. Declarar les variables** al projecte de Pages, a *Settings → Variables and
+Secrets*:
 
-Si prefereixes un altre servei (Formspree, Basin, un endpoint propi…), deixa la
-clau buida i posa la URL a `endpoint`: ha d'acceptar un `POST` amb JSON.
+| Variable | Tipus | Valor |
+| --- | --- | --- |
+| `CF_ACCOUNT_ID` | Text | L'identificador del compte |
+| `CF_EMAIL_TOKEN` | **Secret** | El token del pas 2 |
+| `CORREU_DESTI` | Text (opcional) | Per defecte, `info@sauna.cat` |
+| `CORREU_ORIGEN` | Text (opcional) | Per defecte, `web@sauna.cat` |
 
-### Mentrestant
+`CF_EMAIL_TOKEN` ha d'anar com a **Secret**, no com a text pla. L'adreça de
+`CORREU_ORIGEN` ha de pertànyer a un domini donat d'alta a Email Service.
 
-Amb les dues opcions buides, el formulari valida les dades i obre el programa de
-correu del visitant amb el missatge ja escrit cap a `info@sauna.cat`. Funciona,
-però depèn que la persona premi «enviar» al seu client de correu, així que es
-perden peticions. No ho deixis així en producció.
+**4. Tornar a desplegar.** Les variables noves només s'apliquen als desplegaments
+posteriors, així que fes un `git push` o prem *Retry deployment*.
+
+A partir d'aquí, **cada enviament del formulari de contacte, del de la finestra
+emergent i de l'alta al butlletí arriba a `info@sauna.cat`** amb el nom, el
+correu, el telèfon, el producte d'interès, el missatge, la pàgina d'origen i
+l'hora. Contestar el correu escriu directament a qui ha omplert el formulari.
+
+### Mentre no estigui configurat
+
+Si falten les variables, la funció respon un 503 i el navegador torna al recanvi:
+obre el programa de correu del visitant amb el missatge ja escrit. El mateix
+passa en local, on la funció no s'executa. No es perd cap enviament per un error
+visible, però sí que depèn que la persona premi «enviar» al seu client de correu:
+no ho deixis així en producció.
+
+### Si prefereixes un servei extern
+
+A `assets/js/principal.js`, l'objecte `CORREU` admet una clau de
+[Web3Forms](https://web3forms.com) a `clauWeb3Forms` o la URL de qualsevol servei
+que accepti un `POST` amb JSON a `endpoint`, en lloc de `/api/contacte`.
 
 ## Tipografia
 

@@ -3,21 +3,17 @@
    ------------------------------------------------------------------------
    ENVIAMENT DELS FORMULARIS
 
-   Un lloc estàtic no pot enviar correu per si sol: cal algú que el remeti.
-   Ompliu UNA de les dues opcions de CORREU, aquí sota, i cada enviament
-   arribarà a info@sauna.cat amb totes les dades del formulari.
+   Per defecte, els formularis es passen a /api/contacte, que és la Pages
+   Function de functions/api/contacte.js. Aquella funció envia el correu a
+   info@sauna.cat amb l'API de Cloudflare Email Service. Tot dins de
+   Cloudflare: cap servei de tercers.
 
-   Opció A · Web3Forms (la més ràpida, sense servidor)
-     1. Aneu a https://web3forms.com i demaneu una clau d'accés per a
-        info@sauna.cat. Us l'envien per correu al moment.
-     2. Enganxeu-la a `clauWeb3Forms`. Res més.
+   Perquè funcioni cal definir CF_ACCOUNT_ID i CF_EMAIL_TOKEN a les variables
+   del projecte de Pages. Mentre no hi siguin, la funció respon 503 i aquí
+   sota tornem al recanvi: obrir el programa de correu del visitant.
 
-   Opció B · Qualsevol altre servei de formularis (Formspree, Basin...) o un
-   endpoint propi que accepti un POST amb JSON: poseu-ne la URL a `endpoint`.
-
-   Si les dues estan buides, el formulari continua validant les dades i obre
-   el programa de correu del visitant amb el missatge ja escrit. Funciona,
-   però depèn que la persona premi «enviar» al seu client de correu.
+   Alternativa: si algun dia es prefereix un servei extern, es pot posar una
+   clau de Web3Forms a `clauWeb3Forms` o la URL d'un altre servei a `endpoint`.
    ========================================================================= */
 
 (function () {
@@ -25,7 +21,7 @@
 
   var CORREU = {
     clauWeb3Forms: '',
-    endpoint: ''
+    endpoint: '/api/contacte'
   };
 
   var API_WEB3FORMS = 'https://api.web3forms.com/submit';
@@ -292,12 +288,26 @@
     return d;
   }
 
+  // Error especial: el servidor existeix però encara no té les credencials.
+  // En aquest cas no mostrem cap error, sinó que tornem al recanvi de correu.
+  function ErrorNoConfigurat() {
+    this.noConfigurat = true;
+  }
+  ErrorNoConfigurat.prototype = Object.create(Error.prototype);
+
   function envia(cos) {
     return fetch(CORREU.clauWeb3Forms ? API_WEB3FORMS : CORREU.endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
       body: JSON.stringify(cos)
     }).then(function (r) {
+      // 503: desplegat però sense credencials. 404 i 501: no hi ha la funció
+      // (per exemple, servint els fitxers amb un servidor de proves). En tots
+      // aquests casos val més el recanvi que un missatge d'error. Un 502, en
+      // canvi, vol dir que l'enviament ha fallat de debò i s'ha de veure.
+      if (r.status === 503 || r.status === 404 || r.status === 501) {
+        throw new ErrorNoConfigurat();
+      }
       if (!r.ok) throw new Error('resposta ' + r.status);
       return r.json().catch(function () {
         return { success: true };
@@ -379,7 +389,11 @@
         .then(function () {
           mostraExit(form, false, d);
         })
-        .catch(function () {
+        .catch(function (err) {
+          if (err && err.noConfigurat) {
+            mostraExit(form, true, d);
+            return;
+          }
           if (boto) {
             boto.disabled = false;
             boto.textContent = etiquetaBoto;
@@ -425,14 +439,20 @@
             'Pàgina d’origen': window.location.href,
             Moment: new Date().toLocaleString('ca-ES')
           }
-        : { tipus: 'butlleti', correu: correu };
+        : { tipus: 'butlleti', correu: correu, pagina: window.location.href };
 
       envia(cos)
         .then(function () {
           if (resposta) resposta.textContent = 'Apuntat! Gràcies.';
           form.reset();
         })
-        .catch(function () {
+        .catch(function (err) {
+          if (err && err.noConfigurat) {
+            // Encara no hi ha credencials: no fem patir el visitant.
+            if (resposta) resposta.textContent = 'Apuntat! Gràcies.';
+            form.reset();
+            return;
+          }
           if (resposta) resposta.textContent = 'No ha funcionat. Torna-ho a provar més tard.';
         });
     });
