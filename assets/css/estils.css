@@ -727,6 +727,66 @@ p {
   color: var(--pissarra);
 }
 
+/* Segell de marca (bloc de KUUMA) */
+
+.segell {
+  margin: 0;
+  padding: clamp(2rem, 4vw, 3rem);
+  background: var(--sorra);
+  border: 1px solid var(--linia);
+  border-radius: var(--radi-gran);
+}
+
+.segell__marca {
+  margin: 0;
+  font-family: var(--tipo-titol);
+  font-size: clamp(2.4rem, 5vw, 3.4rem);
+  font-weight: 400;
+  letter-spacing: 0.16em;
+  line-height: 1;
+  color: var(--grafit);
+}
+
+.segell__lema {
+  margin: 1rem 0 0;
+  padding-bottom: 1.6rem;
+  border-bottom: 1px solid var(--linia);
+  font-size: 0.78rem;
+  font-weight: 500;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--avet);
+}
+
+.segell__dades {
+  margin: 0;
+}
+
+.segell__dades > div {
+  padding: 1.1rem 0;
+  border-bottom: 1px solid var(--linia);
+}
+
+.segell__dades > div:last-child {
+  padding-bottom: 0;
+  border-bottom: 0;
+}
+
+.segell__dades dt {
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--pissarra);
+  margin-bottom: 0.3rem;
+}
+
+.segell__dades dd {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.5;
+}
+
 /* Beneficis */
 
 .beneficis {
@@ -1141,7 +1201,8 @@ p {
 
 .galeria__minis {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-auto-flow: column;
+  grid-auto-columns: 1fr; /* s'adapta a tres o quatre miniatures */
   gap: 0.6rem;
   margin-top: 0.6rem;
 }

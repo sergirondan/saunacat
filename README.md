@@ -71,15 +71,16 @@ A més:
 - **Ressenyes**: les de `index.html` i les de les fitxes són d'exemple.
   Substitueix-les per opinions reals abans de publicar.
 - **Preus i especificacions**: revisa'ls model per model.
-- **Imatges**: les il·lustracions SVG de `assets/img/` són marcadors de posició.
-  Quan tinguis fotografia pròpia, desa-la a la mateixa carpeta i canvia el `src`
-  de les etiquetes `<img>` (i el `width`/`height`).
-- **Fotografies del Cub de Cedre 2**: la seva fitxa apunta al CDN de
-  `swellsport.com.au` (enllaç directe, no n'hi ha cap còpia al repositori). Dues
-  advertències: són fotografies d'una altra empresa, de manera que caldria tenir-ne
-  la llicència d'ús abans de publicar el lloc; i els URL porten un paràmetre `?v=`
-  que canvia quan ells reprocessen la imatge, així que un dia deixaran de carregar.
+- **Fotografies dels productes**: totes les fotos dels quatre models (targetes de
+  la portada, galeries i seccions de detall) apunten al CDN de `swellsport.com.au`
+  mitjançant enllaç directe; no n'hi ha cap còpia al repositori. Dues advertències:
+  són fotografies d'una altra empresa, de manera que caldria tenir-ne la llicència
+  d'ús abans de publicar el lloc; i els URL porten un paràmetre `?v=` que canvia
+  quan ells reprocessen la imatge, així que un dia deixaran de carregar.
   Substituir-les per fitxers propis a `assets/img/` és el camí estable.
+- **Il·lustracions SVG**: les de `assets/img/producte-*.svg` han quedat sense fer
+  servir, però es conserven com a recanvi per si cal tornar enrere. `heroi.svg`
+  sí que s'utilitza, de fons a la portada.
 - **Privacitat**: el text és una plantilla; ha de passar per un assessor legal.
 
 ## Com arriben els formularis
