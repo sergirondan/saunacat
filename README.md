@@ -135,25 +135,28 @@ El tauler és en anglès; els noms de menús i botons van tal com hi surten.
    al teu DNS de Cloudflare i espera que quedi `Verified`.
 3. `API Keys` → **Create API Key**, amb permís d'enviament. Comença per `re_`.
 
-### Les variables, en tots dos casos
+### On va cada cosa
 
-`Workers & Pages` → el projecte → `Settings` → `Variables and secrets` (en
-taulers més antics, `Environment variables`) → **Add**:
+Hi ha una trampa important: **`wrangler deploy` esborra totes les variables de
+text abans d'aplicar les del fitxer de configuració.** Qualsevol variable de
+tipus `Text` que posis al tauler desapareixerà en el següent desplegament. Els
+secrets no: aquests es conserven sempre i només s'esborren a mà.
 
-| Variable | Tipus | Quan |
+D'aquí surt la regla:
+
+| Què | On | Per què |
 | --- | --- | --- |
-| `CF_ACCOUNT_ID` | `Text` | Opció A |
-| `CF_EMAIL_TOKEN` | **`Secret`** | Opció A |
-| `RESEND_TOKEN` | **`Secret`** | Opció B |
-| `CORREU_DESTI` | `Text` (opcional) | Per defecte, `info@sauna.cat` |
-| `CORREU_ORIGEN` | `Text` (opcional) | Per defecte, `web@sauna.cat` |
+| `RESEND_TOKEN` | Tauler, com a **Secret** | És una credencial i no pot anar al repositori |
+| `CF_EMAIL_TOKEN` | Tauler, com a **Secret** | Igual |
+| `CF_ACCOUNT_ID` | `wrangler.jsonc`, dins de `vars` | No és secret i al tauler es perdria |
+| `CORREU_DESTI` | `wrangler.jsonc`, dins de `vars` | Igual |
+| `CORREU_ORIGEN` | `wrangler.jsonc`, dins de `vars` | Igual |
 
-Els tokens han d'anar com a **Secret**, mai com a `Text`. L'adreça de
-`CORREU_ORIGEN` ha de pertànyer a un domini verificat al servei que facis servir.
+Per afegir el secret: `Settings` → `Variables and secrets` → **Add variable** →
+tipus **Secret** → nom `RESEND_TOKEN` → enganxa-hi la clau → **Deploy**.
 
-Finalment, **torna a desplegar**: les variables només s'apliquen als
-desplegaments posteriors. `Deployments` → al darrer, menú `⋯` → **Retry
-deployment**, o un `git push`.
+L'adreça de `CORREU_ORIGEN` ha de pertànyer a un domini verificat al servei que
+facis servir.
 
 Si alguna cosa falla, els errors surten als registres del Worker: `Observability`
 → `Logs`, o la pestanya `Logs` del projecte.

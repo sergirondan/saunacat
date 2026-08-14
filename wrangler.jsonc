@@ -16,6 +16,18 @@
     "binding": "ASSETS"
   },
 
+  // Les variables de text van AQUÍ i no al tauler: cada desplegament esborra
+  // les que s'hagin definit allà. Els secrets, en canvi, es conserven sempre,
+  // i per això RESEND_TOKEN no surt en aquest fitxer.
+  //
+  // Mentre el domini no estigui verificat a Resend, només et deixarà enviar
+  // des d'onboarding@resend.dev i cap a l'adreça del teu compte. Per provar-ho
+  // abans d'hora, canvia aquests dos valors, puja-ho, i desfés-ho després.
+  "vars": {
+    "CORREU_DESTI": "info@sauna.cat",
+    "CORREU_ORIGEN": "web@sauna.cat"
+  },
+
   "observability": {
     "enabled": true
   }
