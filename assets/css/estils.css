@@ -558,9 +558,8 @@ p {
 
 /* 5. Heroi i capçaleres de pàgina ------------------------------------------ */
 
-/* Portada a tota pantalla amb fotografia de fons.
-   La primera capa és la fotografia; si encara no hi és, es veu la
-   il·lustració heroi.svg que hi ha a sota. */
+/* Portada a tota pantalla amb fotografia de fons. El degradat fosc de la part
+   inferior és el que manté llegible el títol per sobre de la fusta del moll. */
 .heroi {
   position: relative;
   display: flex;
@@ -576,7 +575,7 @@ p {
       rgba(24, 28, 31, 0.12) 35%,
       rgba(24, 28, 31, 0.72) 100%
     ),
-    url("../img/capcalera-llac.jpg"), url("../img/heroi.svg");
+    url("../img/capcalera-llac.jpg");
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

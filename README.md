@@ -53,22 +53,15 @@ repositori i deixa la configuració de compilació buida:
 Després, a **Custom domains**, afegeix `sauna.cat`. Cada `git push` a `main`
 torna a publicar el lloc automàticament.
 
-## Pendent: la fotografia de la capçalera
+## La fotografia de la capçalera
 
-La portada espera la fotografia del llac amb les muntanyes en aquesta ruta exacta:
+La portada fa servir `assets/img/capcalera-llac.jpg` com a fons, declarada a
+`.heroi` dins del full d'estils. Si la vols canviar, substitueix el fitxer
+conservant el nom i no cal tocar res més.
 
-```
-assets/img/capcalera-llac.jpg
-```
-
-Desa-hi el fitxer i la capçalera la farà servir automàticament. Mentre no hi
-sigui, la capa de sota (`heroi.svg`) es pinta en el seu lloc, de manera que la
-pàgina no es veu trencada; a la consola del navegador hi surt un 404 per aquesta
-imatge fins que la posis.
-
-La composició està pensada per a una foto apaïsada i ampla (idealment 2400 px o
-més d'ample) amb la zona inferior esquerra relativament neta, que és on cauen el
-títol i els botons.
+La composició demana una foto apaïsada i ampla (l'actual fa 2360 × 1327 px) amb
+la zona inferior esquerra relativament neta, que és on cauen el títol i els
+botons. El degradat fosc de la part de baix és el que en manté la llegibilitat.
 
 ## Què cal canviar abans de publicar de debò
 
@@ -96,8 +89,7 @@ A més:
   quan ells reprocessen la imatge, així que un dia deixaran de carregar.
   Substituir-les per fitxers propis a `assets/img/` és el camí estable.
 - **Il·lustracions SVG**: les de `assets/img/producte-*.svg` han quedat sense fer
-  servir, però es conserven com a recanvi per si cal tornar enrere. `heroi.svg`
-  sí que s'utilitza, de fons a la portada.
+  servir, però es conserven com a recanvi per si cal tornar enrere.
 - **Privacitat**: el text és una plantilla; ha de passar per un assessor legal.
 
 ## Com arriben els formularis
