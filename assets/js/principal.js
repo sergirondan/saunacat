@@ -1,20 +1,38 @@
-/* =========================================================================
+﻿/* =========================================================================
    sauna.cat · comportament de la interfície
    ------------------------------------------------------------------------
-   CONFIGURACIÓ: per rebre els formularis en una safata d'entrada real,
-   ompliu ENDPOINT amb la URL del servei que feu servir (Formspree, Basin,
-   Netlify Forms, un endpoint propi...). Ha d'acceptar un POST amb JSON.
+   ENVIAMENT DELS FORMULARIS
 
-     const ENDPOINT = 'https://formspree.io/f/xxxxxxxx';
+   Un lloc estàtic no pot enviar correu per si sol: cal algú que el remeti.
+   Ompliu UNA de les dues opcions de CORREU, aquí sota, i cada enviament
+   arribarà a info@sauna.cat amb totes les dades del formulari.
 
-   Mentre estigui buit, el formulari valida les dades i obre el programa de
-   correu del visitant amb el missatge ja escrit cap a l'adreça de contacte.
+   Opció A · Web3Forms (la més ràpida, sense servidor)
+     1. Aneu a https://web3forms.com i demaneu una clau d'accés per a
+        info@sauna.cat. Us l'envien per correu al moment.
+     2. Enganxeu-la a `clauWeb3Forms`. Res més.
+
+   Opció B · Qualsevol altre servei de formularis (Formspree, Basin...) o un
+   endpoint propi que accepti un POST amb JSON: poseu-ne la URL a `endpoint`.
+
+   Si les dues estan buides, el formulari continua validant les dades i obre
+   el programa de correu del visitant amb el missatge ja escrit. Funciona,
+   però depèn que la persona premi «enviar» al seu client de correu.
    ========================================================================= */
 
 (function () {
   'use strict';
 
-  var ENDPOINT = '';
+  var CORREU = {
+    clauWeb3Forms: '',
+    endpoint: ''
+  };
+
+  var API_WEB3FORMS = 'https://api.web3forms.com/submit';
+
+  function hiHaEnviamentAutomatic() {
+    return Boolean(CORREU.clauWeb3Forms || CORREU.endpoint);
+  }
 
   // Dades de contacte i catàleg. Si canvieu un preu o un model, recordeu
   // d'actualitzar també els HTML corresponents.
@@ -252,6 +270,47 @@
     ].join('\n');
   }
 
+  // Munta el cos del POST. Web3Forms envia per correu totes les claus que
+  // rep, amb el nom que porten, així que aquí ja van en català.
+  function carrega(d) {
+    if (CORREU.clauWeb3Forms) {
+      return {
+        access_key: CORREU.clauWeb3Forms,
+        subject: 'Sol·licitud de trucada · ' + d.producte,
+        from_name: 'sauna.cat',
+        replyto: d.correu || '',
+        botcheck: '',
+        Nom: d.nom || '—',
+        Correu: d.correu || '—',
+        'Telèfon': d.telefon || '—',
+        'Producte d’interès': d.producte,
+        Missatge: d.missatge || '—',
+        'Pàgina d’origen': d.pagina,
+        Moment: new Date().toLocaleString('ca-ES')
+      };
+    }
+    return d;
+  }
+
+  function envia(cos) {
+    return fetch(CORREU.clauWeb3Forms ? API_WEB3FORMS : CORREU.endpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+      body: JSON.stringify(cos)
+    }).then(function (r) {
+      if (!r.ok) throw new Error('resposta ' + r.status);
+      return r.json().catch(function () {
+        return { success: true };
+      });
+    }).then(function (dades) {
+      // Web3Forms respon 200 amb success:false si la clau no és vàlida.
+      if (dades && dades.success === false) {
+        throw new Error(dades.message || 'enviament rebutjat');
+      }
+      return dades;
+    });
+  }
+
   function mostraExit(form, viaCorreu, d) {
     var contenidor = form.closest('[data-modal-contingut]') || form.parentNode;
     var bloc = document.createElement('div');
@@ -305,29 +364,25 @@
 
       var d = recull(form);
       var boto = $('button[type="submit"]', form);
+      var etiquetaBoto = boto ? boto.textContent : '';
       if (boto) {
         boto.disabled = true;
         boto.textContent = 'Enviant…';
       }
 
-      if (!ENDPOINT) {
+      if (!hiHaEnviamentAutomatic()) {
         mostraExit(form, true, d);
         return;
       }
 
-      fetch(ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify(d),
-      })
-        .then(function (r) {
-          if (!r.ok) throw new Error('resposta ' + r.status);
+      envia(carrega(d))
+        .then(function () {
           mostraExit(form, false, d);
         })
         .catch(function () {
           if (boto) {
             boto.disabled = false;
-            boto.textContent = 'Envia';
+            boto.textContent = etiquetaBoto;
           }
           mostraError(
             form,
@@ -352,17 +407,27 @@
         return;
       }
 
-      if (!ENDPOINT) {
+      if (!hiHaEnviamentAutomatic()) {
         if (resposta) resposta.textContent = 'Apuntat! Gràcies.';
         form.reset();
         return;
       }
 
-      fetch(ENDPOINT, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-        body: JSON.stringify({ tipus: 'butlleti', correu: correu }),
-      })
+      var cos = CORREU.clauWeb3Forms
+        ? {
+            access_key: CORREU.clauWeb3Forms,
+            subject: 'Alta al butlletí · sauna.cat',
+            from_name: 'sauna.cat',
+            replyto: correu,
+            botcheck: '',
+            Tipus: 'Alta al butlletí',
+            Correu: correu,
+            'Pàgina d’origen': window.location.href,
+            Moment: new Date().toLocaleString('ca-ES')
+          }
+        : { tipus: 'butlleti', correu: correu };
+
+      envia(cos)
         .then(function () {
           if (resposta) resposta.textContent = 'Apuntat! Gràcies.';
           form.reset();

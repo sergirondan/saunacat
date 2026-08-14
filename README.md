@@ -92,22 +92,40 @@ A més:
   servir, però es conserven com a recanvi per si cal tornar enrere.
 - **Privacitat**: el text és una plantilla; ha de passar per un assessor legal.
 
-## Com arriben els formularis
+## Com arriben els formularis a info@sauna.cat
 
-Per defecte, el formulari valida les dades i obre el programa de correu del
-visitant amb el missatge ja escrit cap a `info@sauna.cat`. Funciona sense cap
-servidor, però depèn que la persona premi «enviar» al seu client de correu.
+Un lloc estàtic no pot enviar correu per si sol: no hi ha cap servidor darrere
+que el remeti. Cal un servei que ho faci per nosaltres, i només demana enganxar
+una clau. **Fins que no ho facis, els correus no arriben sols.**
 
-Per rebre'ls directament a una safata d'entrada, dona d'alta un servei de
-formularis (Formspree, Basin, Web3Forms…) i posa la seva URL a la primera línia
-útil de `assets/js/principal.js`:
+### El pas que falta
+
+1. Ves a [web3forms.com](https://web3forms.com) i demana una clau d'accés per a
+   `info@sauna.cat`. Te l'envien per correu al moment; no cal crear cap compte
+   ni posar-hi cap targeta.
+2. Obre `assets/js/principal.js` i enganxa-la a la primera línia útil:
 
 ```js
-var ENDPOINT = 'https://formspree.io/f/xxxxxxxx';
+var CORREU = {
+  clauWeb3Forms: 'la-teva-clau-aqui',
+  endpoint: ''
+};
 ```
 
-Amb això, l'enviament passa a fer-se per `fetch` en segon pla i el visitant veu
-un missatge de confirmació sense sortir de la pàgina. No cal tocar res més.
+3. Puja el canvi. A partir d'aquí, **cada enviament del formulari de contacte,
+   del formulari de la finestra emergent i de l'alta al butlletí arriba a
+   `info@sauna.cat`** amb el nom, el correu, el telèfon, el producte d'interès,
+   el missatge, la pàgina d'origen i l'hora.
+
+Si prefereixes un altre servei (Formspree, Basin, un endpoint propi…), deixa la
+clau buida i posa la URL a `endpoint`: ha d'acceptar un `POST` amb JSON.
+
+### Mentrestant
+
+Amb les dues opcions buides, el formulari valida les dades i obre el programa de
+correu del visitant amb el missatge ja escrit cap a `info@sauna.cat`. Funciona,
+però depèn que la persona premi «enviar» al seu client de correu, així que es
+perden peticions. No ho deixis així en producció.
 
 ## Tipografia
 
