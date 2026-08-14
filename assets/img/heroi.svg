@@ -1,0 +1,92 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" width="1600" height="900" role="img" preserveAspectRatio="xMidYMid slice">
+  <title>Sauna encesa vora un llac glaçat al capvespre d'hivern</title>
+  <defs>
+    <linearGradient id="cel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#242C31"/>
+      <stop offset=".45" stop-color="#3E4A51"/>
+      <stop offset=".78" stop-color="#7C8A90"/>
+      <stop offset="1" stop-color="#B6BEBF"/>
+    </linearGradient>
+    <linearGradient id="aigua" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#4A585E"/>
+      <stop offset="1" stop-color="#2B353A"/>
+    </linearGradient>
+    <linearGradient id="neu" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#D7DDDD"/>
+      <stop offset="1" stop-color="#AEB7B8"/>
+    </linearGradient>
+    <radialGradient id="lluna" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#EDE6D8" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#EDE6D8" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="calor" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#E8B071" stop-opacity=".55"/>
+      <stop offset="1" stop-color="#E8B071" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="vel" x1="0" y1="1" x2="1" y2="0">
+      <stop offset="0" stop-color="#171D21" stop-opacity=".82"/>
+      <stop offset=".45" stop-color="#171D21" stop-opacity=".42"/>
+      <stop offset="1" stop-color="#171D21" stop-opacity=".08"/>
+    </linearGradient>
+    <pattern id="taulons" width="26" height="14" patternUnits="userSpaceOnUse">
+      <path d="M0 0V14" stroke="#2A2119" stroke-width="1.4" opacity=".45"/>
+    </pattern>
+  </defs>
+
+  <rect width="1600" height="900" fill="url(#cel)"/>
+  <circle cx="1180" cy="170" r="200" fill="url(#lluna)"/>
+  <circle cx="1180" cy="170" r="42" fill="#EDE6D8" opacity=".65"/>
+
+  <!-- serralada llunyana -->
+  <path d="M0 470 L210 358 L360 430 L520 330 L700 470 Z" fill="#404C52" opacity=".85"/>
+  <path d="M600 470 L820 340 L980 420 L1180 320 L1420 440 L1600 380 L1600 470 Z" fill="#38444A" opacity=".9"/>
+
+  <!-- bosc de coníferes -->
+  <g fill="#1E262A">
+    <path d="M60 500 l30-140 30 140z"/><path d="M108 500 l24-112 24 112z"/>
+    <path d="M150 500 l28-126 28 126z"/><path d="M196 500 l20-96 20 96z"/>
+    <path d="M1290 500 l26-118 26 118z"/><path d="M1334 500 l30-138 30 138z"/>
+    <path d="M1384 500 l22-100 22 100z"/><path d="M1424 500 l28-124 28 124z"/>
+    <path d="M1476 500 l20-92 20 92z"/><path d="M1516 500 l26-114 26 114z"/>
+  </g>
+
+  <!-- vora nevada i llac -->
+  <path d="M0 470 h1600 v90 H0 z" fill="url(#neu)"/>
+  <rect y="560" width="1600" height="150" fill="url(#aigua)"/>
+  <g stroke="#93A2A8" stroke-width="2" opacity=".3">
+    <path d="M120 596h300M540 622h420M240 650h520M900 604h360M1020 664h380"/>
+  </g>
+  <rect y="710" width="1600" height="190" fill="#C3CACA"/>
+  <rect y="710" width="1600" height="190" fill="url(#neu)" opacity=".5"/>
+
+  <!-- pantalà -->
+  <rect x="640" y="702" width="330" height="16" fill="#5C5347"/>
+  <g fill="#4A4238">
+    <rect x="672" y="718" width="14" height="46"/>
+    <rect x="912" y="718" width="14" height="46"/>
+  </g>
+
+  <!-- sauna -->
+  <g transform="translate(950 250)">
+    <ellipse cx="230" cy="474" rx="290" ry="26" fill="#E8B071" opacity=".1"/>
+    <rect x="40" y="150" width="390" height="320" fill="#6B543C"/>
+    <rect x="40" y="150" width="390" height="320" fill="#4A3A29" opacity=".55"/>
+    <rect x="40" y="150" width="390" height="320" fill="url(#taulons)"/>
+    <path d="M18 150 L452 150 L440 120 L30 120 Z" fill="#2C241C"/>
+    <rect x="165" y="196" width="140" height="274" fill="#191411"/>
+    <rect x="172" y="203" width="126" height="260" fill="#E0A968"/>
+    <rect x="172" y="203" width="126" height="260" fill="#F6D9A8" opacity=".28"/>
+    <path d="M186 456 L282 214" stroke="#FFF4E2" stroke-width="16" opacity=".2" stroke-linecap="round"/>
+    <ellipse cx="235" cy="330" rx="230" ry="180" fill="url(#calor)"/>
+    <rect x="145" y="470" width="180" height="14" fill="#2C241C"/>
+  </g>
+
+  <!-- fum -->
+  <g fill="#DDE3E4" opacity=".14">
+    <ellipse cx="1120" cy="300" rx="86" ry="24"/>
+    <ellipse cx="1190" cy="248" rx="64" ry="18"/>
+    <ellipse cx="1150" cy="196" rx="44" ry="13"/>
+  </g>
+
+  <rect width="1600" height="900" fill="url(#vel)"/>
+</svg>

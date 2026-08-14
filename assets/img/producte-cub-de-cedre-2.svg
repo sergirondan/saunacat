@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600" width="800" height="600" role="img">
+  <title>Cub de Cedre 2, sauna tradicional per a dues persones</title>
+  <defs>
+    <linearGradient id="cel" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#F0F0EC"/><stop offset="1" stop-color="#D8DCDA"/>
+    </linearGradient>
+    <linearGradient id="vidre" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2B2724" stop-opacity=".94"/>
+      <stop offset=".55" stop-color="#4C433C" stop-opacity=".85"/>
+      <stop offset="1" stop-color="#1D1A18" stop-opacity=".96"/>
+    </linearGradient>
+    <radialGradient id="brasa" cx=".5" cy=".5" r=".5">
+      <stop offset="0" stop-color="#FFB861" stop-opacity=".85"/>
+      <stop offset="1" stop-color="#FFB861" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="taulons" width="22" height="12" patternUnits="userSpaceOnUse">
+      <path d="M0 0V12" stroke="#8F5A2F" stroke-width="1.5" opacity=".38"/>
+    </pattern>
+  </defs>
+
+  <rect width="800" height="600" fill="url(#cel)"/>
+  <circle cx="640" cy="140" r="70" fill="#fff" opacity=".28"/>
+  <path d="M0 470h800v130H0z" fill="#C1C6C3" opacity=".55"/>
+  <path d="M0 470h800" stroke="#B4BAB7" stroke-width="2"/>
+  <ellipse cx="400" cy="478" rx="205" ry="18" fill="#000" opacity=".14"/>
+
+  <rect x="235" y="150" width="330" height="320" fill="#B87A45"/>
+  <rect x="235" y="150" width="330" height="320" fill="#D49A62" opacity=".5"/>
+  <rect x="235" y="150" width="330" height="320" fill="url(#taulons)"/>
+  <rect x="235" y="150" width="330" height="320" fill="none" stroke="#8F5A2F" stroke-width="2"/>
+
+  <path d="M213 150h374l-8-26H221z" fill="#3A3330"/>
+  <rect x="213" y="144" width="374" height="8" fill="#6E4526" opacity=".8"/>
+
+  <rect x="334" y="196" width="132" height="274" fill="#8F5A2F" opacity=".85"/>
+  <rect x="340" y="202" width="120" height="262" rx="3" fill="url(#vidre)"/>
+  <path d="M354 458 L438 212" stroke="#fff" stroke-width="16" opacity=".07" stroke-linecap="round"/>
+  <path d="M382 458 L456 258" stroke="#fff" stroke-width="8" opacity=".06" stroke-linecap="round"/>
+  <circle cx="444" cy="340" r="4" fill="#D8CFC2"/>
+  <ellipse cx="400" cy="400" rx="60" ry="60" fill="url(#brasa)" opacity=".55"/>
+
+  <rect x="231" y="190" width="338" height="5" fill="#B9B4AD" opacity=".55"/>
+  <rect x="231" y="424" width="338" height="5" fill="#B9B4AD" opacity=".55"/>
+  <rect x="316" y="470" width="168" height="14" rx="3" fill="#8F5A2F" opacity=".75"/>
+</svg>
