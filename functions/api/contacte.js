@@ -1,20 +1,27 @@
 /**
  * sauna.cat · recepció dels formularis
  * ---------------------------------------------------------------------------
- * Pages Function que rep el formulari i envia el correu amb l'API REST de
- * Cloudflare Email Service. No cal cap servei de tercers ni cap dependència:
- * Cloudflare desplega aquest fitxer automàticament a /api/contacte.
+ * Pages Function que rep el formulari i n'envia el contingut per correu.
+ * Cloudflare la desplega automàticament a /api/contacte; no cal cap
+ * dependència ni cap pas de compilació.
  *
- * Variables d'entorn (Pages → Settings → Variables and Secrets):
+ * Admet dos remitents. Es tria segons les variables que hi hagi definides, de
+ * manera que canviar d'un a l'altre no demana tocar el codi:
  *
- *   CF_ACCOUNT_ID   L'identificador del compte de Cloudflare. Text pla.
- *   CF_EMAIL_TOKEN  Token d'API amb permís d'enviament de correu. SECRET.
- *   CORREU_DESTI    Opcional. Per defecte, info@sauna.cat.
- *   CORREU_ORIGEN   Opcional. Per defecte, web@sauna.cat. Ha de pertànyer a
- *                   un domini donat d'alta a Email Service.
+ *   A) Cloudflare Email Service — demana el pla Workers Paid (5 $/mes)
+ *      CF_ACCOUNT_ID   Identificador del compte de Cloudflare. Text.
+ *      CF_EMAIL_TOKEN  Token amb el permís Email Sending: Edit. SECRET.
  *
- * Mentre CF_ACCOUNT_ID o CF_EMAIL_TOKEN no hi siguin, la funció respon 503 i
- * el navegador torna al recanvi d'obrir el client de correu del visitant.
+ *   B) Resend — gratuït fins a 3.000 correus el mes
+ *      RESEND_TOKEN    Clau d'API de Resend (re_...). SECRET.
+ *
+ * Comunes a les dues, totes dues opcionals:
+ *   CORREU_DESTI    Per defecte, info@sauna.cat.
+ *   CORREU_ORIGEN   Per defecte, web@sauna.cat. Ha de pertànyer a un domini
+ *                   verificat al servei que facis servir.
+ *
+ * Sense cap de les dues configuracions, la funció respon 503 i el navegador
+ * torna al recanvi d'obrir el client de correu del visitant.
  */
 
 const DESTI_PER_DEFECTE = 'info@sauna.cat';
@@ -87,13 +94,51 @@ function construeixMissatge(d) {
   return { assumpte, text, html };
 }
 
-export async function onRequestPost({ request, env }) {
-  const compte = env.CF_ACCOUNT_ID;
-  const token = env.CF_EMAIL_TOKEN;
+/** Envia amb Cloudflare Email Service. Cal el pla Workers Paid. */
+async function enviaAmbCloudflare(env, missatge) {
+  return fetch(
+    'https://api.cloudflare.com/client/v4/accounts/' + env.CF_ACCOUNT_ID + '/email/sending/send',
+    {
+      method: 'POST',
+      headers: {
+        Authorization: 'Bearer ' + env.CF_EMAIL_TOKEN,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(missatge),
+    }
+  );
+}
 
-  if (!compte || !token) {
+/** Envia amb Resend. Gratuït fins a 3.000 correus el mes. */
+async function enviaAmbResend(env, missatge) {
+  return fetch('https://api.resend.com/emails', {
+    method: 'POST',
+    headers: {
+      Authorization: 'Bearer ' + env.RESEND_TOKEN,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      from: missatge.from,
+      to: [missatge.to],
+      subject: missatge.subject,
+      text: missatge.text,
+      html: missatge.html,
+      reply_to: missatge.reply_to,
+    }),
+  });
+}
+
+export async function onRequestPost({ request, env }) {
+  const ambCloudflare = Boolean(env.CF_ACCOUNT_ID && env.CF_EMAIL_TOKEN);
+  const ambResend = Boolean(env.RESEND_TOKEN);
+
+  if (!ambCloudflare && !ambResend) {
     return json(
-      { success: false, motiu: 'no-configurat', message: 'Falten CF_ACCOUNT_ID o CF_EMAIL_TOKEN.' },
+      {
+        success: false,
+        motiu: 'no-configurat',
+        message: 'Cal CF_ACCOUNT_ID i CF_EMAIL_TOKEN, o bé RESEND_TOKEN.',
+      },
       503
     );
   }
@@ -127,29 +172,24 @@ export async function onRequestPost({ request, env }) {
 
   const { assumpte, text, html } = construeixMissatge(d);
 
-  const resposta = await fetch(
-    'https://api.cloudflare.com/client/v4/accounts/' + compte + '/email/sending/send',
-    {
-      method: 'POST',
-      headers: {
-        Authorization: 'Bearer ' + token,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        to: env.CORREU_DESTI || DESTI_PER_DEFECTE,
-        from: env.CORREU_ORIGEN || ORIGEN_PER_DEFECTE,
-        subject: assumpte,
-        text,
-        html,
-        // Contestar el correu escriu directament a qui ha omplert el formulari.
-        reply_to: d.correu || undefined,
-      }),
-    }
-  );
+  const missatge = {
+    to: env.CORREU_DESTI || DESTI_PER_DEFECTE,
+    from: env.CORREU_ORIGEN || ORIGEN_PER_DEFECTE,
+    subject: assumpte,
+    text,
+    html,
+    // Contestar el correu escriu directament a qui ha omplert el formulari.
+    reply_to: d.correu || undefined,
+  };
+
+  const remitent = ambCloudflare ? 'Cloudflare Email Service' : 'Resend';
+  const resposta = ambCloudflare
+    ? await enviaAmbCloudflare(env, missatge)
+    : await enviaAmbResend(env, missatge);
 
   if (!resposta.ok) {
     const detall = await resposta.text();
-    console.error('Email Service ha fallat', resposta.status, detall);
+    console.error(remitent + ' ha fallat', resposta.status, detall);
     return json({ success: false, message: 'No s’ha pogut enviar el correu.' }, 502);
   }
 
