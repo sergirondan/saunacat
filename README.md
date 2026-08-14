@@ -107,30 +107,48 @@ configuració de compilació ni instal·lar res.
 
 ### Posada en marxa
 
-**1. Donar d'alta el domini a Email Service.** Al tauler de Cloudflare, amb el
-domini `sauna.cat` seleccionat, entra a **Email** i completa l'alta. Verifica
-`info@sauna.cat` com a adreça de destinació: enviar a adreces verificades del
-teu compte és gratuït en qualsevol pla.
+El tauler de Cloudflare és en anglès; els noms de menús i botons van tal com hi
+surten.
 
-**2. Crear un token d'API** a *My Profile → API Tokens*, amb permís d'enviament
-de correu sobre el compte. Copia'l, que només es mostra un cop. Apunta també
-l'*Account ID*, que surt a la barra lateral de la vista general del domini.
+**1. Donar d'alta el domini per enviar.** `Compute` → `Email Service` →
+`Email Sending` → botó **Onboard Domain** → tria `sauna.cat` → revisa els
+registres DNS que et proposa → **Done**.
 
-**3. Declarar les variables** al projecte de Pages, a *Settings → Variables and
-Secrets*:
+**2. Verificar l'adreça de destinació.** `Compute` → `Email Service` →
+`Email Routing` → `Destination Addresses`. Escriu-hi `info@sauna.cat` i envia el
+formulari. Rebràs un correu de verificació: obre'l i prem **Verify email
+address**. Enviar a adreces verificades del teu compte és gratuït en qualsevol
+pla.
+
+**3. Crear el token d'API.** A dalt a la dreta, `My Profile` → `API Tokens` →
+**Create Token** → **Create Custom Token**. Afegeix-hi el permís
+`Account` · `Email Sending` · `Edit` i acota'l al teu compte. Copia el token en
+acabar: no es torna a mostrar.
+
+**4. Copiar l'Account ID.** És el codi hexadecimal de l'URL del tauler:
+`dash.cloudflare.com/<account-id>/...`. També surt a la barra lateral dreta de la
+pàgina `Overview` del domini.
+
+**5. Declarar les variables** al projecte de Pages: `Workers & Pages` → el
+projecte → `Settings` → `Variables and secrets` (en taulers més antics,
+`Environment variables`) → **Add**:
 
 | Variable | Tipus | Valor |
 | --- | --- | --- |
-| `CF_ACCOUNT_ID` | Text | L'identificador del compte |
-| `CF_EMAIL_TOKEN` | **Secret** | El token del pas 2 |
-| `CORREU_DESTI` | Text (opcional) | Per defecte, `info@sauna.cat` |
-| `CORREU_ORIGEN` | Text (opcional) | Per defecte, `web@sauna.cat` |
+| `CF_ACCOUNT_ID` | `Text` | L'Account ID del pas 4 |
+| `CF_EMAIL_TOKEN` | **`Secret`** | El token del pas 3 |
+| `CORREU_DESTI` | `Text` (opcional) | Per defecte, `info@sauna.cat` |
+| `CORREU_ORIGEN` | `Text` (opcional) | Per defecte, `web@sauna.cat` |
 
-`CF_EMAIL_TOKEN` ha d'anar com a **Secret**, no com a text pla. L'adreça de
-`CORREU_ORIGEN` ha de pertànyer a un domini donat d'alta a Email Service.
+`CF_EMAIL_TOKEN` ha d'anar com a **Secret**, no com a `Text`. L'adreça de
+`CORREU_ORIGEN` ha de pertànyer a un domini donat d'alta a `Email Sending`.
 
-**4. Tornar a desplegar.** Les variables noves només s'apliquen als desplegaments
-posteriors, així que fes un `git push` o prem *Retry deployment*.
+**6. Tornar a desplegar.** Les variables noves només s'apliquen als desplegaments
+posteriors: `Deployments` → al darrer, menú `⋯` → **Retry deployment**. O
+simplement fes un `git push`.
+
+Si alguna cosa falla, els errors surten a `Deployments` → el desplegament →
+`Functions` (registres en temps real).
 
 A partir d'aquí, **cada enviament del formulari de contacte, del de la finestra
 emergent i de l'alta al butlletí arriba a `info@sauna.cat`** amb el nom, el
