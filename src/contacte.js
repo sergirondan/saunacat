@@ -1,9 +1,9 @@
 /**
  * sauna.cat · recepció dels formularis
  * ---------------------------------------------------------------------------
- * Pages Function que rep el formulari i n'envia el contingut per correu.
- * Cloudflare la desplega automàticament a /api/contacte; no cal cap
- * dependència ni cap pas de compilació.
+ * Rep el formulari i n'envia el contingut per correu. La crida hi arriba des
+ * de src/index.js, que és el punt d'entrada del Worker, quan es demana
+ * POST /api/contacte.
  *
  * Admet dos remitents. Es tria segons les variables que hi hagi definides, de
  * manera que canviar d'un a l'altre no demana tocar el codi:
@@ -128,7 +128,7 @@ async function enviaAmbResend(env, missatge) {
   });
 }
 
-export async function onRequestPost({ request, env }) {
+export async function gestionaContacte(request, env) {
   const ambCloudflare = Boolean(env.CF_ACCOUNT_ID && env.CF_EMAIL_TOKEN);
   const ambResend = Boolean(env.RESEND_TOKEN);
 

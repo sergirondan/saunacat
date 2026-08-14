@@ -1,0 +1,22 @@
+{
+  // El nom ha de coincidir amb el del Worker que ja tens al tauler de
+  // Cloudflare. Si allà es diu d'una altra manera, canvia'l aquí.
+  "name": "saunacat",
+
+  // Punt d'entrada. És el que fa que Cloudflare deixi de veure el projecte
+  // com «només fitxers estàtics» i, per tant, el que habilita les variables.
+  "main": "src/index.js",
+
+  "compatibility_date": "2026-08-14",
+
+  // Tot el lloc web. Si una petició coincideix amb un fitxer d'aquí dins, es
+  // serveix directament i el Worker ni s'executa.
+  "assets": {
+    "directory": "./public",
+    "binding": "ASSETS"
+  },
+
+  "observability": {
+    "enabled": true
+  }
+}

@@ -1,4 +1,4 @@
-# sauna.cat
+﻿# sauna.cat
 
 Lloc web estàtic en català per a sauna.cat, la divisió domèstica de **KUUMA**:
 saunes de fusta massissa per a casa.
@@ -9,58 +9,55 @@ Els fitxers que hi ha al repositori són exactament els que es publiquen.
 ## Estructura
 
 ```
-index.html               Pàgina principal amb totes les seccions
-privacitat.html          Privacitat, cookies i avís legal
-productes/               Una fitxa per model (4)
-  cub-de-cedre-2.html
-  cub-de-cedre-4.html
-  black-eco-4.html
-  white-retreat-4.html
-functions/api/contacte.js  Pages Function: envia els formularis per correu
-assets/css/estils.css    Tot l'estil del lloc
-assets/js/principal.js   Menú, galeria, finestra del formulari i validació
-assets/img/                Fotografia de la capçalera i il·lustracions
-robots.txt, sitemap.xml
+wrangler.jsonc           Configuració del Worker: punt d'entrada i assets
+src/index.js             Punt d'entrada: enruta /api/contacte i delega la resta
+src/contacte.js          Rep el formulari i l'envia per correu
+public/                  El lloc web, tal com es publica
+  index.html               Pàgina principal amb totes les seccions
+  privacitat.html          Privacitat, cookies i avís legal
+  productes/               Una fitxa per model (4)
+  assets/css/estils.css    Tot l'estil del lloc
+  assets/js/principal.js   Menú, galeria, finestra del formulari i validació
+  assets/img/              Fotografia de la capçalera i il·lustracions
+  robots.txt, sitemap.xml
 ```
 
-Tot el que hi ha fora de `functions/` són fitxers estàtics que es publiquen tal
-com són. La carpeta `functions/` la desplega Cloudflare Pages automàticament;
-segueix sense caldre cap ordre de compilació.
+Tot el que hi ha dins de `public/` són fitxers estàtics que es publiquen tal com
+són, i `public/` fa d'arrel del lloc: `public/index.html` es veu a `/`. El Worker
+de `src/` només s'executa quan la petició no coincideix amb cap fitxer, que en
+aquest lloc vol dir només `/api/contacte`. No hi ha cap pas de compilació.
 
 ## Veure'l en local
 
-Obre `index.html` amb doble clic. Prou. Si vols un servidor local (perquè les
-rutes es comportin com en producció), amb Python:
+Obre `public/index.html` amb doble clic. Prou, per a tot menys el formulari. Si
+vols un servidor local, des de dins de `public/`:
 
 ```bash
 python -m http.server 8000
 ```
 
-## Publicar a GitHub + Cloudflare Pages
+Així no s'executa el Worker i `/api/contacte` no existeix, però el formulari no
+es trenca: en no trobar-lo, torna al recanvi d'obrir el client de correu.
 
-```bash
-git add .
-git commit -m "Lloc web de sauna.cat"
-git branch -M main
-git remote add origin https://github.com/USUARI/saunacat.git
-git push -u origin main
-```
+## Publicar
 
-A Cloudflare: **Workers & Pages → Create → Pages → Connect to Git**, tria el
-repositori i deixa la configuració de compilació buida:
+El projecte és un **Worker amb assets estàtics** connectat al repositori de
+GitHub. Cada `git push` a `main` el torna a publicar.
 
-| Camp | Valor |
-| --- | --- |
-| Framework preset | None |
-| Build command | *(buit)* |
-| Build output directory | `/` |
+Tota la configuració viu a `wrangler.jsonc`, no al tauler. El camp `name` ha de
+coincidir amb el nom del Worker a Cloudflare; si allà es diu d'una altra manera,
+canvia'l al fitxer. La configuració de compilació al tauler (`Settings` →
+`Build`) es pot deixar buida: el desplegament el fa `wrangler` llegint aquest
+fitxer.
 
-Després, a **Custom domains**, afegeix `sauna.cat`. Cada `git push` a `main`
-torna a publicar el lloc automàticament.
+Per què no és un projecte de tipus Pages: Pages llegeix una carpeta `functions/`
+i els Workers no. En un Worker, el codi de servidor s'ha de declarar amb `main`
+al `wrangler.jsonc`, que és el que hi ha aquí. Si el projecte fos de tipus Pages,
+aquesta estructura no li serviria.
 
 ## La fotografia de la capçalera
 
-La portada fa servir `assets/img/capcalera-llac.jpg` com a fons, declarada a
+La portada fa servir `public/assets/img/capcalera-llac.jpg` com a fons, declarada a
 `.heroi` dins del full d'estils. Si la vols canviar, substitueix el fitxer
 conservant el nom i no cal tocar res més.
 
@@ -79,11 +76,11 @@ substitució global:
 | `+34900000000` | el telèfon real en format enllaç |
 | `info@sauna.cat` | l'adreça de correu real |
 | `Polígon industrial · Vallès Occidental · Barcelona` | l'adreça real |
-| `[Raó social]`, `[NIF]` a `privacitat.html` | les dades fiscals reals |
+| `[Raó social]`, `[NIF]` a `public/privacitat.html` | les dades fiscals reals |
 
 A més:
 
-- **Ressenyes**: les de `index.html` i les de les fitxes són d'exemple.
+- **Ressenyes**: les de `public/index.html` i les de les fitxes són d'exemple.
   Substitueix-les per opinions reals abans de publicar.
 - **Preus i especificacions**: revisa'ls model per model.
 - **Fotografies dels productes**: totes les fotos dels quatre models (targetes de
@@ -92,16 +89,15 @@ A més:
   són fotografies d'una altra empresa, de manera que caldria tenir-ne la llicència
   d'ús abans de publicar el lloc; i els URL porten un paràmetre `?v=` que canvia
   quan ells reprocessen la imatge, així que un dia deixaran de carregar.
-  Substituir-les per fitxers propis a `assets/img/` és el camí estable.
-- **Il·lustracions SVG**: les de `assets/img/producte-*.svg` han quedat sense fer
+  Substituir-les per fitxers propis a `public/assets/img/` és el camí estable.
+- **Il·lustracions SVG**: les de `public/assets/img/producte-*.svg` han quedat sense fer
   servir, però es conserven com a recanvi per si cal tornar enrere.
 - **Privacitat**: el text és una plantilla; ha de passar per un assessor legal.
 
 ## Com arriben els formularis a info@sauna.cat
 
-El navegador envia el formulari a `/api/contacte`, que és la Pages Function de
-`functions/api/contacte.js`. Cloudflare la desplega automàticament: no cal
-canviar la configuració de compilació ni instal·lar res.
+El navegador envia el formulari a `/api/contacte`. El Worker de `src/index.js`
+reconeix aquesta ruta i la passa a `src/contacte.js`, que és qui envia el correu.
 
 La funció sap enviar per dues vies i tria la que tingui configurada, així que
 canviar d'una a l'altra és qüestió de variables, no de codi.
@@ -159,8 +155,8 @@ Finalment, **torna a desplegar**: les variables només s'apliquen als
 desplegaments posteriors. `Deployments` → al darrer, menú `⋯` → **Retry
 deployment**, o un `git push`.
 
-Si alguna cosa falla, els errors surten a `Deployments` → el desplegament →
-`Functions` (registres en temps real).
+Si alguna cosa falla, els errors surten als registres del Worker: `Observability`
+→ `Logs`, o la pestanya `Logs` del projecte.
 
 A partir d'aquí, **cada enviament del formulari de contacte, del de la finestra
 emergent i de l'alta al butlletí arriba a `info@sauna.cat`** amb el nom, el
@@ -177,7 +173,7 @@ no ho deixis així en producció.
 
 ### Si prefereixes un servei extern
 
-A `assets/js/principal.js`, l'objecte `CORREU` admet una clau de
+A `public/assets/js/principal.js`, l'objecte `CORREU` admet una clau de
 [Web3Forms](https://web3forms.com) a `clauWeb3Forms` o la URL de qualsevol servei
 que accepti un `POST` amb JSON a `endpoint`, en lloc de `/api/contacte`.
 
@@ -186,8 +182,8 @@ que accepti un `POST` amb JSON a `endpoint`, en lloc de `/api/contacte`.
 Els titulars fan servir **Source Serif 4** i el text corregut, **Inter**, servides
 per Google Fonts amb un `<link>` a cada pàgina. És l'única petició externa de tot
 el lloc. Si vols que sigui totalment autònom (o evitar Google per privacitat),
-baixa els fitxers `.woff2`, desa'ls a `assets/fonts/` i declara'ls amb `@font-face`
-a `assets/css/estils.css`; les variables `--tipo-titol` i `--tipo` ja centralitzen
+baixa els fitxers `.woff2`, desa'ls a `public/assets/fonts/` i declara'ls amb `@font-face`
+a `public/assets/css/estils.css`; les variables `--tipo-titol` i `--tipo` ja centralitzen
 la resta.
 
 ## Nota sobre el contingut
